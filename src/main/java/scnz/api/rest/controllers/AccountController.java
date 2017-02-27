@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import scnz.api.core.exceptions.AccountDoesNotExistException;
 import scnz.api.core.exceptions.AccountExistsException;
+import scnz.api.core.exceptions.ItemExistsException;
 import scnz.api.core.pojo.Account;
 import scnz.api.core.pojo.Item;
 import scnz.api.core.services.AccountService;
@@ -65,7 +66,7 @@ public class AccountController {
             return new ResponseEntity<AccountResource>(HttpStatus.NOT_FOUND);
         }
         AccountResource accountResource = new AccountResourceAsm().toResource(account);
-        return new ResponseEntity<AccountResource>(HttpStatus.OK);
+        return new ResponseEntity<AccountResource>(accountResource, HttpStatus.OK);
     }
 
     /**
@@ -85,7 +86,9 @@ public class AccountController {
             headers.setLocation(URI.create(addedItemResource.getLink("self").getHref()));
             return new ResponseEntity<ItemResource>(addedItemResource, headers, HttpStatus.CREATED);
         } catch (AccountDoesNotExistException e) {
-            throw new BadRequestException();
+            throw new BadRequestException(e);
+        } catch (ItemExistsException e) {
+            throw new ConflictException(e);
         }
     }
 }
