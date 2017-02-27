@@ -1,11 +1,12 @@
 package scnz.api.rest.resources;
 
 import org.springframework.hateoas.ResourceSupport;
+import scnz.api.core.pojo.Item;
 
 /**
  * Created by wanghe on 30/01/17.
  */
-public class ItemResources extends ResourceSupport {
+public class ItemResource extends ResourceSupport {
 
     private String itemName;
 
@@ -15,5 +16,11 @@ public class ItemResources extends ResourceSupport {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public Item toItem() {
+        Item item = new Item();
+        item.setItemName(itemName);
+        return item;
     }
 }

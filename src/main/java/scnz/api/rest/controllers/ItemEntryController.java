@@ -4,21 +4,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import scnz.api.core.entities.Item;
-import scnz.api.rest.resources.ItemResources;
+import scnz.api.core.pojo.Item;
+import scnz.api.core.pojo.ItemEntry;
+import scnz.api.core.services.ItemEntryService;
+import scnz.api.rest.resources.ItemResource;
 import scnz.api.rest.resources.asm.ItemResourcesAsm;
-import scnz.api.core.services.ItemService;
 
 /**
  * Created by wanghe on 30/01/17.
  */
 @Controller
 @RequestMapping("/items")
-public class ItemDispatchController {
+public class ItemEntryController {
 
-    private ItemService service;
+    private ItemEntryService service;
 
-    public ItemDispatchController(ItemService service) {
+    public ItemEntryController(ItemEntryService service) {
         this.service = service;
     }
 
@@ -36,13 +37,13 @@ public class ItemDispatchController {
      * @return
      */
     @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
-    public ResponseEntity<ItemResources> getItem(@PathVariable String itemId) {
-        Item item = service.retrieve(itemId);
+    public ResponseEntity<ItemResource> getItem(@PathVariable Long itemId) {
+        ItemEntry item = service.findItemEntry(itemId);
         if (item != null) {
-            ItemResources resources = new ItemResourcesAsm().toResource(item);
-            return new ResponseEntity<ItemResources>(resources, HttpStatus.OK);
+            ItemResource resource = new ItemResourcesAsm().toResource(item);
+            return new ResponseEntity<ItemResource>(resource, HttpStatus.OK);
         } else {
-            return new ResponseEntity<ItemResources>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<ItemResource>(HttpStatus.NOT_FOUND);
         }
     }
 }

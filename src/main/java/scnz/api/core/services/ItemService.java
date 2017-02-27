@@ -1,34 +1,44 @@
 package scnz.api.core.services;
 
-import scnz.api.core.entities.Item;
+import scnz.api.core.pojo.Item;
+import scnz.api.core.pojo.ItemEntry;
+import scnz.api.core.utils.ItemEntryList;
+import scnz.api.core.utils.ItemList;
 
 /**
- * Created by wanghe on 30/01/17.
+ * Created by wanghe on 27/02/17.
  */
 public interface ItemService {
+
     /**
-     * retrieve item by Id or return null if cannot be found
+     * Create item entry
+     *
+     * @param itemId
+     * @param itemData
+     * @return
+     */
+    public ItemEntry createItemEntry(Long itemId, ItemEntry itemData);
+
+    /**
+     * Find all items
+     *
+     * @return
+     */
+    public ItemList findAllItems();
+
+    /**
+     * Find all item entries
      *
      * @param itemId
      * @return
      */
-    public Item retrieve(String itemId);
+    public ItemEntryList findAllItemEntries(Long itemId);
 
     /**
-     * Delete item by Id or return null if cannot be found
+     * Find item by specifing ID
      *
      * @param itemId
      * @return
      */
-    public Item delete(String itemId);
-
-    /**
-     * Update item by id return null if cannot be found
-     *
-     * @param itemId
-     * @param item
-     * @return
-     */
-    public Item update(String itemId, Item item);
-
+    public Item findItemById(Long itemId);
 }

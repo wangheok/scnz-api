@@ -10,9 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import scnz.api.core.entities.Item;
-import scnz.api.rest.controllers.ItemDispatchController;
-import scnz.api.core.services.ItemService;
+import scnz.api.core.pojo.Item;
+import scnz.api.rest.controllers.ItemController;
+import scnz.api.core.services.ItemEntryService;
 
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -27,41 +27,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by wanghe on 30/01/17.
  */
 public class ItemDispatchControllerTest {
+    @Mock
+    private ItemEntryService service;
 
     @InjectMocks
-    private ItemDispatchController controller;
-
-    @Mock
-    private ItemService service;
-
+    private ItemController controller;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        System.out.println("Before setup");
     }
 
+    /**
+     * Post: /items
+     *
+     * @throws Exception
+     */
     @Test
     public void getResource() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/items")
-                .content("{\"itemId\": \"Mac\", \"itemName\": \"Laptop\"}")
+                .content("{\"itemId\": \"2\", \"itemName\": \"MacBook\"}")
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andDo(print());
-//        MockMvcResultMatchers
+        ).andExpect(jsonPath("$.itemId", is(2))).andDo(print());
     }
 
-
+    /**
+     * Get: /items/{itemId}
+     *
+     * @throws Exception
+     */
     @Test
-    public void getCurrentStock() throws Exception {
-        Item item = new Item("001", "ThinkPad");
-        when(service.retrieve("001")).thenReturn(item);
+    public void getSpecificItem() throws Exception {
+        Item item = new Item();
+        item.setItemId(1L);
+        item.setItemName("ThinkPad");
+        when(service.retrieve(1L)).thenReturn(item);
 
-        mockMvc.perform(get("/items/001"))
+        mockMvc.perform(get("/items/1"))
                 .andDo(print())
                 .andExpect(jsonPath("$.itemName", is(item.getItemName())))
-                .andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/items/001"))))
-//                .andExpect(jsonPath("$.links[0].href", CoreMatchers.endsWith("/items/001")))
+                .andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/items/1"))))
                 .andExpect(status().isOk());
     }
+
 }

@@ -1,28 +1,21 @@
-package scnz.api.core.entities;
+package scnz.api.core.pojo;
 
 /**
  * Created by wanghe on 30/01/17.
  */
 public class Item {
 
-    private String itemId;
+    private Long itemId;
 
     private String itemName;
 
-    public Item() {
+    private Account account;
 
-    }
-
-    public Item(String itemId, String itemName) {
-        this.itemId = itemId;
-        this.itemName = itemName;
-    }
-
-    public String getItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 
@@ -32,5 +25,13 @@ public class Item {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
