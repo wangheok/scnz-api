@@ -25,12 +25,12 @@ public class ItemEntryController {
     /**
      * Get specific item entry by ID
      *
-     * @param itemId
+     * @param itemEntryId
      * @return
      */
-    @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
-    public ResponseEntity<ItemEntryResource> getItemEntry(@PathVariable Long itemId) {
-        ItemEntry itemEntry = service.findItemEntry(itemId);
+    @RequestMapping(value = "/{itemEntryId}", method = RequestMethod.GET)
+    public ResponseEntity<ItemEntryResource> getItemEntry(@PathVariable Long itemEntryId) {
+        ItemEntry itemEntry = service.findItemEntry(itemEntryId);
         if (itemEntry == null) {
             return new ResponseEntity<ItemEntryResource>(HttpStatus.NOT_FOUND);
         }
@@ -41,12 +41,12 @@ public class ItemEntryController {
     /**
      * Delete item entry by Id
      *
-     * @param itemId
+     * @param itemEntryId
      * @return
      */
-    @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE)
-    public ResponseEntity<ItemEntryResource> deleteItemEntry(@PathVariable Long itemId) {
-        ItemEntry itemEntry = service.deleteItemEntry(itemId);
+    @RequestMapping(value = "/{itemEntryId}", method = RequestMethod.DELETE)
+    public ResponseEntity<ItemEntryResource> deleteItemEntry(@PathVariable Long itemEntryId) {
+        ItemEntry itemEntry = service.deleteItemEntry(itemEntryId);
         if (itemEntry == null) {
             return new ResponseEntity<ItemEntryResource>(HttpStatus.NOT_FOUND);
         }
@@ -57,14 +57,14 @@ public class ItemEntryController {
     /**
      * Update item entry by ID
      *
-     * @param itemId
+     * @param itemEntryId
      * @param itemEntryResource
      * @return
      */
-    @RequestMapping(value = "/{itemId}", method = RequestMethod.PUT)
-    public ResponseEntity<ItemEntryResource> updateItemEntry(@PathVariable Long itemId,
+    @RequestMapping(value = "/{itemEntryId}", method = RequestMethod.PUT)
+    public ResponseEntity<ItemEntryResource> updateItemEntry(@PathVariable Long itemEntryId,
                                                              @RequestBody ItemEntryResource itemEntryResource) {
-        ItemEntry updateEntry = service.updateItemEntry(itemId, itemEntryResource.toItemEntry());
+        ItemEntry updateEntry = service.updateItemEntry(itemEntryId, itemEntryResource.toItemEntry());
         if (updateEntry == null) {
             return new ResponseEntity<ItemEntryResource>(HttpStatus.NOT_FOUND);
         }

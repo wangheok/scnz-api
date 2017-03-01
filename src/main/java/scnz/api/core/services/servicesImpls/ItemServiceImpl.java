@@ -10,6 +10,7 @@ import scnz.api.core.utils.ItemList;
  * Created by wanghe on 1/03/17.
  */
 public class ItemServiceImpl implements ItemService {
+
     @Override
     public ItemEntry createItemEntry(Long itemId, ItemEntry itemData) {
         return null;

@@ -8,10 +8,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import scnz.api.core.exceptions.ItemNotFoundException;
 import scnz.api.core.pojo.Account;
 import scnz.api.core.pojo.Item;
 import scnz.api.core.pojo.ItemEntry;
 import scnz.api.core.services.ItemService;
+import scnz.api.core.utils.ItemEntryList;
 import scnz.api.core.utils.ItemList;
 
 import java.util.ArrayList;
@@ -111,14 +113,14 @@ public class ItemControllerTest {
      * @throws Exception
      */
     @Test
-    public void createItemEntryToExistingItem() throws Exception {
+    public void createItemEntryForExistingItem() throws Exception {
         Item item = new Item();
         item.setItemId(1L);
         item.setItemName("Existing Item Name");
 
         ItemEntry itemEntry = new ItemEntry();
-        itemEntry.setItemId(1L);
-        itemEntry.setItemName("Create item entry");
+        itemEntry.setItemEntryId(1L);
+        itemEntry.setItemEntryName("Create item entry");
 
         when(itemService.createItemEntry(eq(1L), any(ItemEntry.class))).thenReturn(itemEntry);
 
@@ -126,15 +128,72 @@ public class ItemControllerTest {
                 .content("{\"itemName\": \"Generic item Name\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(jsonPath("$.itemName", is(itemEntry.getItemName())))
+                .andExpect(jsonPath("$.itemEntryName", is(itemEntry.getItemEntryName())))
                 .andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/item-entries/1"))))
                 .andExpect(header().string("Location", endsWith("/item-entries/1")))
                 .andExpect(status().isCreated());
     }
 
+    /**
+     * Creating item entry for existing item
+     *
+     * @throws Exception
+     */
     @Test
-    public void findAllItemEntries() throws Exception {
+    public void createItemEntryForNonExistingItem() throws Exception {
+        when(itemService.createItemEntry(eq(1L), any(ItemEntry.class))).thenThrow(new ItemNotFoundException());
+
+        mockMvc.perform(post("/items/1/item-entries")
+                .content("{\"itemName\": \"Generic item Name\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    /**
+     * Find all item entries for existing item
+     *
+     * @throws Exception
+     */
+    @Test
+    public void findAllItemEntriesForExistingItem() throws Exception {
+        ItemEntry itemEntry1 = new ItemEntry();
+        itemEntry1.setItemEntryId(1L);
+        itemEntry1.setItemEntryName("Item Entry #1");
+
+        ItemEntry itemEntry2 = new ItemEntry();
+        itemEntry2.setItemEntryId(2L);
+        itemEntry2.setItemEntryName("Item Entry #2");
+
+        List<ItemEntry> itemEntryList = new ArrayList<>();
+        itemEntryList.add(itemEntry1);
+        itemEntryList.add(itemEntry2);
+
+        ItemEntryList allItemEntries = new ItemEntryList();
+        allItemEntries.setItemEntries(itemEntryList);
+        allItemEntries.setItemId(1L);
+
+        when(itemService.findAllItemEntries(1L)).thenReturn(allItemEntries);
+
+        mockMvc.perform(get("/items/1/item-entries"))
+                .andDo(print())
+                .andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/items/1/item-entries"))))
+                .andExpect(jsonPath("$.itemEntryResourceList[*].itemEntryName", hasItem(is("Item Entry #2"))))
+                .andExpect(status().isOk());
 
     }
 
+    /**
+     * Find all item entries for non-existing item
+     *
+     * @throws Exception
+     */
+    @Test
+    public void findAllItemEntriesForNonExistingItem() throws Exception {
+        when(itemService.findAllItemEntries(2L)).thenThrow(new ItemNotFoundException());
+
+        mockMvc.perform(get("/items/2/item-entries"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
 }

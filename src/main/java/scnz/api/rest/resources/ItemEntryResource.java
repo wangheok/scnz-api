@@ -8,19 +8,19 @@ import scnz.api.core.pojo.ItemEntry;
  */
 public class ItemEntryResource extends ResourceSupport {
 
-    private String itemName;
+    private String itemEntryName;
 
-    public String getItemName() {
-        return itemName;
+    public String getItemEntryName() {
+        return itemEntryName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setItemEntryName(String itemEntryName) {
+        this.itemEntryName = itemEntryName;
     }
 
     public ItemEntry toItemEntry() {
         ItemEntry itemEntry = new ItemEntry();
-        itemEntry.setItemName(itemName);
+        itemEntry.setItemEntryName(itemEntryName);
         return itemEntry;
     }
 }

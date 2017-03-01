@@ -22,8 +22,8 @@ public class ItemEntryResourceAsm extends ResourceAssemblerSupport<ItemEntry, It
     @Override
     public ItemEntryResource toResource(ItemEntry itemEntry) {
         ItemEntryResource itemEntryResource = new ItemEntryResource();
-        itemEntryResource.setItemName(itemEntry.getItemName());
-        itemEntryResource.add(linkTo(ItemEntryController.class).slash(itemEntry.getItemId()).withSelfRel());
+        itemEntryResource.setItemEntryName(itemEntry.getItemEntryName());
+        itemEntryResource.add(linkTo(ItemEntryController.class).slash(itemEntry.getItemEntryId()).withSelfRel());
         if (itemEntry.getItem() != null) {
             itemEntryResource.add(linkTo(ItemController.class).slash(itemEntry.getItem().getItemId()).withRel("item"));
         }

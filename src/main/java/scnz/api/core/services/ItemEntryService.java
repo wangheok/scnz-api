@@ -12,26 +12,26 @@ public interface ItemEntryService {
     /**
      * retrieve item entry by Id or return null if cannot be found
      *
-     * @param itemId
+     * @param itemEntryId
      * @return
      */
-    public ItemEntry findItemEntry(Long itemId);
+    public ItemEntry findItemEntry(Long itemEntryId);
 
     /**
      * Delete item entry by Id or return null if cannot be found
      *
-     * @param itemId
+     * @param itemEntryId
      * @return
      */
-    public ItemEntry deleteItemEntry(Long itemId);
+    public ItemEntry deleteItemEntry(Long itemEntryId);
 
     /**
      * Update item by id return null if cannot be found
      *
-     * @param itemId
-     * @param itemData
+     * @param itemEntryId
+     * @param itemEntryData
      * @return
      */
-    public ItemEntry updateItemEntry(Long itemId, ItemEntry itemData);
+    public ItemEntry updateItemEntry(Long itemEntryId, ItemEntry itemEntryData);
 
 }

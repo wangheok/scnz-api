@@ -5,24 +5,24 @@ package scnz.api.core.pojo;
  */
 public class ItemEntry {
 
-    private Long itemId;
-    private String itemName;
+    private Long itemEntryId;
+    private String itemEntryName;
     private Item item;
 
-    public Long getItemId() {
-        return itemId;
+    public Long getItemEntryId() {
+        return itemEntryId;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setItemEntryId(Long itemEntryId) {
+        this.itemEntryId = itemEntryId;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getItemEntryName() {
+        return itemEntryName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setItemEntryName(String itemEntryName) {
+        this.itemEntryName = itemEntryName;
     }
 
     public Item getItem() {

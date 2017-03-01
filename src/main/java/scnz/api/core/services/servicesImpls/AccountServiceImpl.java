@@ -8,6 +8,7 @@ import scnz.api.core.services.AccountService;
  * Created by wanghe on 1/03/17.
  */
 public class AccountServiceImpl implements AccountService {
+
     @Override
     public Account findAccountById(Long accountId) {
         return null;

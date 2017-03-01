@@ -9,6 +9,7 @@ import scnz.api.rest.resources.ItemEntryResource;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Created by wanghe on 28/02/17.
@@ -23,7 +24,7 @@ public class ItemEntryListResourceAsm extends ResourceAssemblerSupport<ItemEntry
         List<ItemEntryResource> itemEntryResourceList = new ItemEntryResourceAsm().toResources(itemEntryList.getItemEntries());
         ItemEntryListResource itemEntryListResource = new ItemEntryListResource();
         itemEntryListResource.setItemEntryResourceList(itemEntryResourceList);
-        itemEntryListResource.add(linkTo(ItemController.class).slash(itemEntryList.getItemId()).withSelfRel());
+        itemEntryListResource.add(linkTo(methodOn(ItemController.class).findAllItemEntries(itemEntryList.getItemId())).withSelfRel());
         return itemEntryListResource;
     }
 }
