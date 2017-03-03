@@ -1,11 +1,13 @@
 package scnz.api.core.services.servicesImpls;
 
+import org.springframework.stereotype.Service;
 import scnz.api.core.pojo.ItemEntry;
 import scnz.api.core.services.ItemEntryService;
 
 /**
  * Created by wanghe on 1/03/17.
  */
+@Service
 public class ItemEntryServiceImpl implements ItemEntryService {
 
     @Override
