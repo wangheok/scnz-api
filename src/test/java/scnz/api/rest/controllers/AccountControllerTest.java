@@ -3,16 +3,18 @@ package scnz.api.rest.controllers;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.exceptions.ExceptionIncludingMockitoWarnings;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
@@ -24,7 +26,6 @@ import scnz.api.core.pojo.Account;
 import scnz.api.core.pojo.Item;
 import scnz.api.core.services.AccountService;
 
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,11 +43,13 @@ public class AccountControllerTest {
     private AccountController accountController;
 
     private MockMvc mockMvc;
+    private ArgumentCaptor<Account> argumentCaptor;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(accountController).build();
+        argumentCaptor = ArgumentCaptor.forClass(Account.class);
     }
 
     /**
@@ -70,6 +73,10 @@ public class AccountControllerTest {
                 .andExpect(header().string("Location", endsWith("/accounts/1")))
                 .andExpect(jsonPath("$.username", is(createdAccount.getUsername())))
                 .andExpect(status().isCreated());
+
+        verify(accountService).createAccount(argumentCaptor.capture());
+        String password = argumentCaptor.getValue().getPassword();
+        assertEquals("password", password);
     }
 
     /**
@@ -109,7 +116,7 @@ public class AccountControllerTest {
         mockMvc.perform(get("/accounts/3"))
                 .andDo(print())
                 .andExpect(jsonPath("$.username", is(account.getUsername())))
-                .andExpect(jsonPath("$.password", is(nullValue())))
+                .andExpect(jsonPath("$.password").doesNotExist())
                 .andExpect(status().isOk());
     }
 
