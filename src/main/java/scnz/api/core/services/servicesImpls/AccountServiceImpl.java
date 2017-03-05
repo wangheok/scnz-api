@@ -1,6 +1,8 @@
 package scnz.api.core.services.servicesImpls;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import scnz.api.core.dao.AccountDao;
 import scnz.api.core.pojo.Account;
 import scnz.api.core.pojo.Item;
 import scnz.api.core.services.AccountService;
@@ -10,6 +12,9 @@ import scnz.api.core.services.AccountService;
  */
 @Service
 public class AccountServiceImpl implements AccountService {
+
+    @Autowired
+    AccountDao accountDao;
 
     @Override
     public Account findAccountById(Long accountId) {

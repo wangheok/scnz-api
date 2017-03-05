@@ -32,4 +32,13 @@ public class ItemEntry {
     public void setItem(Item item) {
         this.item = item;
     }
+
+    @Override
+    public String toString() {
+        return "ItemEntry{" +
+                "itemEntryId=" + itemEntryId +
+                ", itemEntryName='" + itemEntryName + '\'' +
+                ", item=" + item +
+                '}';
+    }
 }

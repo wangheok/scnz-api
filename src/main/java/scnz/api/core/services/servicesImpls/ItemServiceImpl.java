@@ -1,6 +1,8 @@
 package scnz.api.core.services.servicesImpls;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import scnz.api.core.dao.ItemDao;
 import scnz.api.core.pojo.Item;
 import scnz.api.core.pojo.ItemEntry;
 import scnz.api.core.services.ItemService;
@@ -12,6 +14,9 @@ import scnz.api.core.utils.ItemList;
  */
 @Service
 public class ItemServiceImpl implements ItemService {
+
+    @Autowired
+    ItemDao itemDao;
 
     @Override
     public ItemEntry createItemEntry(Long itemId, ItemEntry itemData) {
